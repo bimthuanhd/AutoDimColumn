@@ -102,24 +102,13 @@ namespace HTAddin
             //    }
             //}
 
-            List<Edge> columnEdges = new List<Edge>();
+            List<Edge> columnReferenceEdges = new List<Edge>();
             Options options = new Options();
             GeometryElement geometryElement = column.get_Geometry(options);
 
-            foreach (GeometryObject geometryObject in geometryElement)
-            {
-                if (geometryObject is Solid solid)
-                {
-                    foreach (Edge edge in solid.Edges)
-                    {
-                        if (edge.Reference != null)
-                        {
-                            columnEdges.Add(edge);
-                        }
-                    }
-                }
-            }
-
+            ElementFilter filter = new ElementCategoryFilter(BuiltInCategory.OST_Columns);
+            FindReferenceTarget targetType = FindReferenceTarget.Face;
+            ReferenceIntersector referenceIntersector = new ReferenceIntersector(filter, targetType, activeView);
 
 
             return Result.Succeeded;
