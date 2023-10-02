@@ -60,6 +60,7 @@
     <Compile Include="Single\Form\FormData.cs" />
     <Compile Include="Single\Form\FormDataUtil.cs" />
     <Compile Include="Single\Model\Data.cs" />
+    <Compile Include="Testing\TestCommandColumn.cs" />
     <Compile Include="Testing\TestCommand.cs" />
     <Compile Include="Utils\BaseViewModel.cs" />
     <Compile Include="Utils\Util.cs" />
