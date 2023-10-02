@@ -27,93 +27,60 @@ namespace HTAddin
             data.app = app;
             data.doc = doc;
             data.sel = sel;
+            ////
 
-            Reference columnRef = sel.PickObject(ObjectType.Element, new ColumnSelectionFilter(), "Chọn cột");
+            Reference refWall = sel.PickObject(ObjectType.Element, new WallSelectionFilter());
+            var w = doc.GetElement(refWall.ElementId);
 
-            var column = doc.GetElement(columnRef.ElementId) as FamilyInstance;
-            //ElementId symbolId = column.Symbol.Id;
-            //FamilySymbol symbol = doc.GetElement(symbolId) as FamilySymbol;
+            LocationCurve LC = w.Location as LocationCurve;
+            XYZ Normal = findNormal(LC.Curve);
+            XYZ lineDir = LC.Curve.GetEndPoint(1) - LC.Curve.GetEndPoint(0);
 
-            //Options options = new Options();
-            //GeometryElement geometryElement = symbol.get_Geometry(options);
+            Options op = app.Create.NewGeometryOptions();
+            op.ComputeReferences = true;
+            op.IncludeNonVisibleObjects = true;
 
-            //Reference leftFaceReference = null;
-            //Reference rightFaceReference = null;
+            ReferenceArray RA = new ReferenceArray();
 
-            //foreach (GeometryObject obj in geometryElement)
-            //{
-            //    if (obj is Solid solid)
-            //    {
-            //        FaceArray faces = solid.Faces;
+            GeometryElement GE = w.get_Geometry(op) as GeometryElement;
+            foreach (GeometryObject GO in GE)
+            {
+                Solid solid = GO as Solid;
+                FaceArray FA = solid.Faces;
+                foreach (Face f in FA)
+                {
+                    PlanarFace pf = f as PlanarFace;
+                    if (pf != null && isParallel(lineDir, pf.FaceNormal))
+                    {
+                        RA.Append(pf.Reference);
+                    }
+                }
+            }
 
-            //        foreach (Face face in faces)
-            //        {
-            //            double tolerance = 0.001; // Khoảng chấp nhận
-            //            XYZ basisX = XYZ.BasisX;
-            //            var currentRef = face.Reference;
+            Line l1 = Line.CreateBound(LC.Curve.GetEndPoint(0), LC.Curve.GetEndPoint(1));
+            using (Transaction trans = new Transaction(doc, "ABC"))
+            {
+                trans.Start();
+                doc.Create.NewDimension(doc.ActiveView, l1, RA);
+                trans.Commit();
+            }
 
-            //            TaskDialog.Show("normal", face.ComputeNormal(new UV()).ToString());
-
-            //            if (face.ComputeNormal(new UV()).IsAlmostEqualTo(basisX, tolerance))
-            //            {
-            //                leftFaceReference = face.Reference;
-            //            }
-
-            //            if (face.ComputeNormal(new UV()).IsAlmostEqualTo(-basisX, tolerance))
-            //            {
-            //                rightFaceReference = face.Reference;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //if (leftFaceReference != null && rightFaceReference != null)
-            //{
-            //    var leftFaceElement = doc.GetElement(leftFaceReference.ElementId);
-            //    var rightFaceElement = doc.GetElement(rightFaceReference.ElementId);
-
-            //    var leftFace = GetPlanarFace(leftFaceElement);
-            //    var rightFace = GetPlanarFace(rightFaceElement);
-
-            //    if (leftFace != null && rightFace != null)
-            //    {
-            //        var leftFaceCenter = GetCentroid(leftFace);
-            //        var rightFaceCenter = GetCentroid(rightFace);
-
-            //        var line = Line.CreateBound(leftFaceCenter, rightFaceCenter);
-
-            //        using (Transaction trans = new Transaction(doc, "Tạo kích thước cột"))
-            //        {
-            //            trans.Start();
-
-            //            ReferenceArray references = new ReferenceArray();
-            //            references.Append(leftFaceReference);
-            //            references.Append(rightFaceReference);
-
-            //            // Tạo kích thước mới
-            //            Dimension dimension = doc.Create.NewDimension(doc.ActiveView, line, references);
-
-            //            trans.Commit();
-            //        }
-            //    }
-            //    else
-            //    {
-            //        TaskDialog.Show("Lỗi", "Không tìm thấy mặt trái và mặt phải của cột");
-            //    }
-            //}
-
-            List<Edge> columnReferenceEdges = new List<Edge>();
-            Options options = new Options();
-            GeometryElement geometryElement = column.get_Geometry(options);
-
-            ElementFilter filter = new ElementCategoryFilter(BuiltInCategory.OST_Columns);
-            FindReferenceTarget targetType = FindReferenceTarget.Face;
-            ReferenceIntersector referenceIntersector = new ReferenceIntersector(filter, targetType, activeView);
-
-
+            ////
             return Result.Succeeded;
         }
 
+        private bool isParallel(XYZ lineDir, XYZ faceNormal)
+        {
+            return faceNormal.CrossProduct(lineDir).IsAlmostEqualTo(new XYZ(0, 0, 0));
+        }
+        private XYZ findNormal(Curve curve)
+        {
+            XYZ p = curve.GetEndPoint(0);
+            XYZ q = curve.GetEndPoint(1);
+            XYZ v = q - p;
+
+            return v.CrossProduct(XYZ.BasisZ).Normalize();
+        }
         public static DimensionType GetDimensionTypeByName(Document doc, string typeName)
         {
             FilteredElementCollector collector = new FilteredElementCollector(doc);
@@ -162,6 +129,19 @@ namespace HTAddin
             else
             {
                 TaskDialog.Show("revit", "line is null");
+            }
+        }
+        public class WallSelectionFilter : ISelectionFilter
+        {
+            public bool AllowElement(Element elem)
+            {
+                return elem is Wall wall && wall.Category != null &&
+                       wall.Category.Id.IntegerValue == (int)BuiltInCategory.OST_Walls;
+            }
+
+            public bool AllowReference(Reference reference, XYZ position)
+            {
+                return false;
             }
         }
         public class ColumnSelectionFilter : ISelectionFilter
@@ -270,6 +250,30 @@ namespace HTAddin
             }
 
             return null;
+        }
+
+        private Reference GetFirstGeometryReference(GeometryElement geometryElement)
+        {
+            Reference firstReference = null;
+
+            foreach (GeometryObject geometryObject in geometryElement)
+            {
+                if (geometryObject is GeometryInstance geometryInstance)
+                {
+                    GeometryElement instanceGeometry = geometryInstance.GetInstanceGeometry();
+                    firstReference = GetFirstGeometryReference(instanceGeometry);
+                    if (firstReference != null)
+                        break;
+                }
+                else if (geometryObject is Solid solid && solid.Faces.Size > 0)
+                {
+                    Face firstFace = solid.Faces.get_Item(0);
+                    firstReference = firstFace.Reference;
+                    break;
+                }
+            }
+
+            return firstReference;
         }
     }
 }
