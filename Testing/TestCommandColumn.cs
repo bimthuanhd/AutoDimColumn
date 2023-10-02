@@ -5,6 +5,8 @@ using SingleData;
 using Autodesk.Revit.UI.Selection;
 using Autodesk.Revit.UI;
 using System.Collections.Generic;
+using System.Net;
+
 
 namespace HTAddin
 {
@@ -31,6 +33,7 @@ namespace HTAddin
 
             Reference refColumn = sel.PickObject(ObjectType.Element, new ColumnSelectionFilter());
             var column = doc.GetElement(refColumn.ElementId);
+            var points = Util.GetRectangle_FamilyInstancePoints(column as FamilyInstance);
 
             Options op = app.Create.NewGeometryOptions();
             op.ComputeReferences = true;
@@ -45,31 +48,46 @@ namespace HTAddin
                 if (GO is Solid solid)
                 {
                     FaceArray FA = solid.Faces;
+
                     foreach (Face f in FA)
                     {
                         double tolerance = 0.001;
                         XYZ basisX = XYZ.BasisX;
                         PlanarFace pf = f as PlanarFace;
-
-                        if (pf.ComputeNormal(new UV()).IsAlmostEqualTo(basisX, tolerance) ||
-                            pf.ComputeNormal(new UV()).IsAlmostEqualTo(-basisX, tolerance))
+                        if (!pf.ComputeNormal(new UV()).IsAlmostEqualTo(XYZ.BasisZ, tolerance) ||
+                            !pf.ComputeNormal(new UV()).IsAlmostEqualTo(-XYZ.BasisZ, tolerance))
                         {
-                            RA.Append(pf.Reference);
+                            for (int i = 0; i < FA.Size - 1; i++)
+                            {
 
-                            Edge edgeLoopPoint = pf.EdgeLoops.get_Item(0).get_Item(0);
-                            Line line = edgeLoopPoint.AsCurve() as Line;
-                            XYZ point = line.GetEndPoint(0);
-                            listPoint.Add(point);
+                            }
+
+                            if (pf.ComputeNormal(new UV()).IsAlmostEqualTo(basisX, tolerance) ||
+                                pf.ComputeNormal(new UV()).IsAlmostEqualTo(-basisX, tolerance))
+                            {
+                                RA.Append(pf.Reference);
+
+                                Edge edgeLoopPoint = pf.EdgeLoops.get_Item(0).get_Item(0);
+                                Line line = edgeLoopPoint.AsCurve() as Line;
+                                XYZ point = line.GetEndPoint(0);
+                                listPoint.Add(point);
+                            }
                         }
                     }
                 }
             }
-            Line l1 = Line.CreateBound(listPoint[0], listPoint[1]);
+            var point1 = listPoint[0];
+            var point2 = listPoint[1];
+            Line l1 = Line.CreateBound(point1, point2);
 
             using (Transaction trans = new Transaction(doc, "ABC"))
             {
                 trans.Start();
-                doc.Create.NewDimension(doc.ActiveView, l1, RA);
+                var dim = doc.Create.NewDimension(doc.ActiveView, l1, RA);
+
+                var extendDistance = Util.MmToFeet(300);
+                ElementTransformUtils.MoveElement(doc, dim.Id, extendDistance * XYZ.BasisY);
+
                 trans.Commit();
             }
 
