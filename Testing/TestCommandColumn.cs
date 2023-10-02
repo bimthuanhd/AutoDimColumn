@@ -29,35 +29,43 @@ namespace HTAddin
             data.sel = sel;
             ////
 
-            Reference refWall = sel.PickObject(ObjectType.Element, new WallSelectionFilter());
-            var w = doc.GetElement(refWall.ElementId);
-
-            LocationCurve LC = w.Location as LocationCurve;
-            XYZ Normal = findNormal(LC.Curve);
-            XYZ lineDir = LC.Curve.GetEndPoint(1) - LC.Curve.GetEndPoint(0);
+            Reference refColumn = sel.PickObject(ObjectType.Element, new ColumnSelectionFilter());
+            var column = doc.GetElement(refColumn.ElementId);
 
             Options op = app.Create.NewGeometryOptions();
             op.ComputeReferences = true;
             op.IncludeNonVisibleObjects = true;
 
             ReferenceArray RA = new ReferenceArray();
+            List<XYZ> listPoint = new List<XYZ>();
 
-            GeometryElement GE = w.get_Geometry(op) as GeometryElement;
+            GeometryElement GE = column.get_Geometry(op) as GeometryElement;
             foreach (GeometryObject GO in GE)
             {
-                Solid solid = GO as Solid;
-                FaceArray FA = solid.Faces;
-                foreach (Face f in FA)
+                if (GO is Solid solid)
                 {
-                    PlanarFace pf = f as PlanarFace;
-                    if (pf != null && isParallel(lineDir, pf.FaceNormal))
+                    FaceArray FA = solid.Faces;
+                    foreach (Face f in FA)
                     {
-                        RA.Append(pf.Reference);
+                        double tolerance = 0.001;
+                        XYZ basisX = XYZ.BasisX;
+                        PlanarFace pf = f as PlanarFace;
+
+                        if (pf.ComputeNormal(new UV()).IsAlmostEqualTo(basisX, tolerance) ||
+                            pf.ComputeNormal(new UV()).IsAlmostEqualTo(-basisX, tolerance))
+                        {
+                            RA.Append(pf.Reference);
+
+                            Edge edgeLoopPoint = pf.EdgeLoops.get_Item(0).get_Item(0);
+                            Line line = edgeLoopPoint.AsCurve() as Line;
+                            XYZ point = line.GetEndPoint(0);
+                            listPoint.Add(point);
+                        }
                     }
                 }
             }
+            Line l1 = Line.CreateBound(listPoint[0], listPoint[1]);
 
-            Line l1 = Line.CreateBound(LC.Curve.GetEndPoint(0), LC.Curve.GetEndPoint(1));
             using (Transaction trans = new Transaction(doc, "ABC"))
             {
                 trans.Start();

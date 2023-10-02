@@ -65,5 +65,9 @@
     <Compile Include="Utils\BaseViewModel.cs" />
     <Compile Include="Utils\Util.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gitignore" />
+    <Content Include="csharp.gitignore" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
