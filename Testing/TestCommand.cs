@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace HTAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class TestCommandColumn : IExternalCommand
+    public class TestCommand : IExternalCommand
     {
         private FormData formData => FormData.Instance;
         private Data data => Data.Instance;

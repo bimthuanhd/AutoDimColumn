@@ -340,6 +340,18 @@ namespace HTAddin
 
             return rebarHookTypes;
         }
+        public static List<Grid> GetAllGrids(Document doc)
+        {
+            List<Grid> grids = new List<Grid>();
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            ICollection<Element> elements = collector.OfClass(typeof(Grid)).ToElements();
+            foreach (var element in elements)
+            {
+                grids.Add(element as Grid);
+            }
+
+            return grids;
+        }
         //
         public static List<RebarBarType> GetAllRebarBarTypes(Document doc)
         {

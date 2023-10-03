@@ -11,7 +11,7 @@ using System;
 namespace HTAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class TestCommand : IExternalCommand
+    public class TestCommandColumn : IExternalCommand
     {
         private FormData formData => FormData.Instance;
         private Data data => Data.Instance;
@@ -134,7 +134,6 @@ namespace HTAddin
             ////
             return Result.Succeeded;
         }
-
 
         private bool isParallel(XYZ lineDir, XYZ faceNormal)
         {
