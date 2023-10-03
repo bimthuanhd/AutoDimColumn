@@ -11,7 +11,7 @@ using System;
 namespace HTAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class TestCommand : IExternalCommand
+    public class TestCommandColumn : IExternalCommand
     {
         private FormData formData => FormData.Instance;
         private Data data => Data.Instance;

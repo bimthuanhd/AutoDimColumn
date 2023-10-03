@@ -3,10 +3,10 @@ D:\Github\AutoDimColumn\bin\Debug\AutoDimColumn.pdb
 D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.CoreCompileInputs.cache
 D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.dll
 D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.pdb
+D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.AssemblyReference.cache
 G:\RV.API\AutoDimColumn\bin\Debug\AutoDimColumn.dll
 G:\RV.API\AutoDimColumn\bin\Debug\AutoDimColumn.pdb
 G:\RV.API\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.AssemblyReference.cache
 G:\RV.API\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.CoreCompileInputs.cache
 G:\RV.API\AutoDimColumn\obj\Debug\AutoDimColumn.dll
 G:\RV.API\AutoDimColumn\obj\Debug\AutoDimColumn.pdb
-D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.AssemblyReference.cache
