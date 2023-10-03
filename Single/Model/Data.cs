@@ -27,6 +27,6 @@ namespace SingleData
         public Selection sel { get; set; }
 
         //data
-
+        public TColumnGroup TColumnGroup { get; set; }
     }
 }

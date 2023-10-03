@@ -47,7 +47,6 @@ namespace HTAddin
 
                 List<XYZ> filteredPoints = new List<XYZ>();
                 List<XYZ> directions = new List<XYZ>();
-                List<Grid> grids = new List<Grid>();
                 List<Face> faces = new List<Face>();
 
                 GeometryElement GE = column.get_Geometry(op) as GeometryElement;
