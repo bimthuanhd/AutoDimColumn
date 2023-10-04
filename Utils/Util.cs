@@ -722,6 +722,23 @@ namespace HTAddin
             }
             return transform;
         }
+
+        // Get Distance
+        public static double CalculateDistanceToLine(XYZ point, Line line)
+        {
+            XYZ lineStart = line.GetEndPoint(0);
+            XYZ lineEnd = line.GetEndPoint(1);
+            XYZ vector1 = point - lineStart;
+            XYZ vector2 = lineEnd - lineStart;
+            double distance = vector1.CrossProduct(vector2).GetLength() / vector2.GetLength();
+            return distance;
+        }
+        public static bool IsPerpendicularToDirection(PlanarFace face, XYZ direction, double tolerance)
+        {
+            XYZ normal = face.ComputeNormal(new UV());
+            double dotProduct = normal.DotProduct(direction);
+            return Math.Abs(dotProduct) < tolerance;
+        }
         public static bool ArePointsEqual(XYZ point1, XYZ point2)
         {
             return Math.Abs(point1.X - point2.X) < 0.000001 && Math.Abs(point1.Y - point2.Y) < 0.000001;

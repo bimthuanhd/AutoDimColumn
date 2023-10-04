@@ -34,8 +34,11 @@ namespace HTAddin
             var tColumns = q.TColumns;
             foreach (var tColumn in tColumns)
             {
-
-
+                var tDims = tColumn.TDimGroup.DetailTDims;
+                foreach (var tDim in tDims)
+                {
+                    TDimUtil.Do(tDim);
+                }
             }
         }
 

@@ -10,8 +10,9 @@ namespace HTAddin
     public class TGrid
     {
         public Grid Grid { get; set; }
-
-
+        public Line Line { get; set; }
+        public Reference Ref { get; set; }
 
     }
+
 }

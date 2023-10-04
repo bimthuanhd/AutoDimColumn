@@ -13,15 +13,23 @@ namespace HTAddin
 {
     public class TDimGroup
     {
-        private List<TDim> tDims;
-        public List<TDim> TDims
+        public TColumn Tcolumn;
+        private List<TDim> detailTDims;
+        public List<TDim> DetailTDims
         {
-            get => this.tDims ?? (this.tDims = new List<TDim>());
-            set => this.tDims = value;
+            get => this.detailTDims ?? (this.detailTDims = TDimGroupUtil.GetDetailTDims(this));
+            set => this.detailTDims = value;
         }
-
+        private List<TDim> totalTDims;
+        public List<TDim> TotalTDims
+        {
+            get => this.totalTDims ?? (this.totalTDims = TDimGroupUtil.GetTotalTDims(this));
+            set => this.totalTDims = value;
+        }
+        public ReferenceArray RA { get; set; }
+        public List<XYZ> Points { get; set; }
+        public List<XYZ> Directions { get; set; }
         public List<Face> Faces { get; set; }
-
 
     }
 }

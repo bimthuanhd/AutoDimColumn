@@ -13,11 +13,23 @@ namespace HTAddin
 {
     public class TDim
     {
-        public TGrid TGrid { get; set; }
-        public Line Line { get; set; }  
-        public ReferenceArray RA { get; set; } 
+        public TDimGroup Dict;
+        private TGrid nearestTGrid;
+        public TGrid NearestTGrid
+        {
+            get => this.nearestTGrid ?? (this.nearestTGrid = TDimUtil.GetNearestTGrid(this));
+            set=> this.nearestTGrid = value;
+        }
+        private Line line;
+        public Line Line
+        {
+            get => this.line ?? (this.line = TDimUtil.GetLine(this));
+            set => this.line = value;
+        }
+        public ReferenceArray RA { get; set; }
         public List<XYZ> TargetPoint { get; set; }
         public XYZ Direction { get; set; }
+        public Face Face { get; set; }
 
     }
 

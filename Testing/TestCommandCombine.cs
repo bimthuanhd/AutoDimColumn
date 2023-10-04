@@ -120,6 +120,7 @@ namespace HTAddin
                 Reference refGr1 = null;
                 Reference refGr2 = null;
 
+                // find nearestGrid
                 foreach (var grid in selectedGrids)
                 {
                     Options opgr = app.Create.NewGeometryOptions();

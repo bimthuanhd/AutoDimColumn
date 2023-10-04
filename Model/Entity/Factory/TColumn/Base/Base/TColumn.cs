@@ -29,7 +29,11 @@ namespace HTAddin
             }
         }
 
-        public TDimGroup TDimGroup { get; set; }
+        private TDimGroup tDimGroup;
+        public TDimGroup TDimGroup {
+            get => this.tDimGroup ?? (this.tDimGroup = TColumnUtil.GetTDimGroup(this));
+            set => this.tDimGroup = value;
+        }
 
     }
 
