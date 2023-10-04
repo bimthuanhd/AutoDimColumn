@@ -14,19 +14,17 @@ namespace HTAddin
         {
             var doc = Data.Instance.doc;
             var input = q.Tcolumn.Dict.Input;
-            DimensionType dimensionType = input.DimensionTypes.Where(x => x.Name == input.Selected_NameDimStyle).ToList()[0];
-
 
             foreach (var detailTDim in q.DetailTDims)
             {
                 Dimension dim = null;
-                if (dimensionType == null)
+                if (input.Selected_DimStyle == null)
                 {
                     dim = doc.Create.NewDimension(doc.ActiveView, detailTDim.Line, detailTDim.RA);
                 }
                 else
                 {
-                    dim = doc.Create.NewDimension(doc.ActiveView, detailTDim.Line, detailTDim.RA, dimensionType);
+                    dim = doc.Create.NewDimension(doc.ActiveView, detailTDim.Line, detailTDim.RA, input.Selected_DimStyle);
                 }
                 var extendDistance = Util.MmToFeet(300);
                 ElementTransformUtils.MoveElement(doc, dim.Id, extendDistance * detailTDim.Direction);
@@ -37,13 +35,13 @@ namespace HTAddin
                 foreach (var totalTDim in q.TotalTDims)
                 {
                     Dimension dim = null;
-                    if (dimensionType == null)
+                    if (input.Selected_DimStyle == null)
                     {
                         dim = doc.Create.NewDimension(doc.ActiveView, totalTDim.Line, totalTDim.RA);
                     }
                     else
                     {
-                        dim = doc.Create.NewDimension(doc.ActiveView, totalTDim.Line, totalTDim.RA, dimensionType);
+                        dim = doc.Create.NewDimension(doc.ActiveView, totalTDim.Line, totalTDim.RA, input.Selected_DimStyle);
                     }
                     var extendDistance = Util.MmToFeet(500);
                     ElementTransformUtils.MoveElement(doc, dim.Id, extendDistance * totalTDim.Direction);

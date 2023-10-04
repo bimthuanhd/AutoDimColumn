@@ -30,5 +30,16 @@ namespace HTAddin
 
             return itemSources;
         }
+
+        public static DimensionType GetSelected_DimStyle( Input q)
+        {
+            DimensionType dimStyle = null;
+            if (q.Selected_NameDimStyle!=null)
+            {
+                dimStyle = q.DimensionTypes.Where(x => x.Name == q.Selected_NameDimStyle).ToList()[0];
+            }
+
+            return dimStyle;
+        }
     }
 }
