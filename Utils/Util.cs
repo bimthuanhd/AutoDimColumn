@@ -372,27 +372,6 @@ namespace HTAddin
 
             return dimensionTypes;
         }
-        public static DimensionType GetDefaultDimensionType(Document document)
-        {
-            FilteredElementCollector collector = new FilteredElementCollector(document);
-            ICollection<Element> dimensionTypes = collector.OfClass(typeof(DimensionType)).ToElements();
-
-            // Bây giờ, bạn có danh sách tất cả các DimensionType trong Document.
-
-            // Tiếp theo, bạn cần xác định DimensionType mặc định. 
-            DimensionType defaultDimensionType = null;
-
-            foreach (Element dimensionType in dimensionTypes)
-            {
-                // Kiểm tra xem DimensionType có phải là mặc định không.
-                if ((dimensionType as DimensionType).IsValidDefaultFamilyType(dimensionType.Id) == true)
-                {
-                    defaultDimensionType = dimensionType as DimensionType;
-                    break; // Thoát khỏi vòng lặp khi tìm thấy DimensionType mặc định.
-                }
-            }
-            return defaultDimensionType;
-        }
         //
         public static List<RebarBarType> GetAllRebarBarTypes(Document doc)
         {

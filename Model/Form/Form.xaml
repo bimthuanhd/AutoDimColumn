@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Model.Form"
              mc:Ignorable="d" Title ="AutoDim Column" 
-             Height="200" Width="300" Closing="Window_Closing">
+             Height="200" Width="400" Closing="Window_Closing">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -20,20 +20,20 @@
                         <StackPanel.Resources>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Margin" Value="5"/>
-                                <Setter Property="Width" Value="120"/>
+                                <Setter Property="Width" Value="100"/>
                                 <Setter Property="Height" Value="20"/>
                                 <Setter Property="VerticalAlignment" Value="Center"/>
                                 <Setter Property="HorizontalAlignment" Value="Left"/>
                             </Style>
                             <Style TargetType="ComboBox">
                                 <Setter Property="Margin" Value="0,0,10,0"/>
-                                <Setter Property="Width" Value="120"/>
+                                <Setter Property="Width" Value="230"/>
                                 <Setter Property="Height" Value="20"/>
                                 <Setter Property="VerticalAlignment" Value="Center"/>
                             </Style>
                             <Style TargetType="CheckBox">
                                 <Setter Property="Margin" Value="0,0,10,0"/>
-                                <Setter Property="Width" Value="120"/>
+                                <Setter Property="Width" Value="230"/>
                                 <Setter Property="Height" Value="20"/>
                                 <Setter Property="VerticalAlignment" Value="Center"/>
                                 <Setter Property="HorizontalAlignment" Value="Center"/>

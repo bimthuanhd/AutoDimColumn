@@ -29,6 +29,7 @@ namespace HTAddin
             data.app = app;
             data.doc = doc;
             data.sel = sel;
+
             ////
             var selectedGrids = Util.GetAllGrids(doc);
             List<FamilyInstance> columnins = Util.SelectElementsbyType(uiDoc, BuiltInCategory.OST_StructuralColumns);

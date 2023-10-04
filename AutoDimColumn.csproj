@@ -92,12 +92,12 @@
     <Content Include=".gitignore" />
     <Content Include="csharp.gitignore" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Page Include="Model\Form\Form.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
