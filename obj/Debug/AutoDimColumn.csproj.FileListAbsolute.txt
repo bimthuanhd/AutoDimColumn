@@ -14,3 +14,4 @@ D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn_MarkupCompile.cache
 D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn_MarkupCompile.lref
 D:\Github\AutoDimColumn\obj\Debug\Model\Form\Form.baml
 D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.g.resources
+D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.AssemblyReference.cache

@@ -29,7 +29,12 @@ namespace HTAddin
             set => this.itemSource_NameDimStyle = value;
         }
 
-        public string Selected_NameDimStyle { get; set; }
+        private string selected_NameDimStyle;
+        public string Selected_NameDimStyle
+        {
+            get => this.selected_NameDimStyle ?? (this.selected_NameDimStyle = InputUtil.GetSelected_NameDimStyle(this));
+            set => this.selected_NameDimStyle = value;
+        }
 
         private DimensionType selected_DimStyle;
         public DimensionType Selected_DimStyle

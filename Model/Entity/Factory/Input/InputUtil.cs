@@ -30,6 +30,14 @@ namespace HTAddin
 
             return itemSources;
         }
+        
+        public static string GetSelected_NameDimStyle(Input q)
+        {
+            string nameDim = null;
+            nameDim = Util.GetDefaultDimensionType(Data.Instance.doc).Name;
+
+            return nameDim;
+        }
 
         public static DimensionType GetSelected_DimStyle( Input q)
         {
