@@ -3,10 +3,15 @@ D:\Github\AutoDimColumn\bin\Debug\AutoDimColumn.pdb
 D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.CoreCompileInputs.cache
 D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.dll
 D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.pdb
-D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.AssemblyReference.cache
 G:\RV.API\AutoDimColumn\bin\Debug\AutoDimColumn.dll
 G:\RV.API\AutoDimColumn\bin\Debug\AutoDimColumn.pdb
 G:\RV.API\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.AssemblyReference.cache
 G:\RV.API\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.CoreCompileInputs.cache
 G:\RV.API\AutoDimColumn\obj\Debug\AutoDimColumn.dll
 G:\RV.API\AutoDimColumn\obj\Debug\AutoDimColumn.pdb
+D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.AssemblyReference.cache
+D:\Github\AutoDimColumn\obj\Debug\Model\Form\Form.g.cs
+D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn_MarkupCompile.cache
+D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn_MarkupCompile.lref
+D:\Github\AutoDimColumn\obj\Debug\Model\Form\Form.baml
+D:\Github\AutoDimColumn\obj\Debug\AutoDimColumn.g.resources

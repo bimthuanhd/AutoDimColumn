@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HTAddin;
+using Model.Form;
 
 namespace SingleData
 {
@@ -18,8 +19,12 @@ namespace SingleData
 
         //model
         public  Data ModelData => Data.Instance;
-         
 
+        private Form form;
+        public Form Form => form ?? (form = new Form { DataContext = this.TColumnGroupVM });
+
+        private TColumnGroupVM tColumnGroupVM;
+        public TColumnGroupVM TColumnGroupVM => this.tColumnGroupVM ?? (this.tColumnGroupVM = TColumnGroupVMUtil.GetVM(ModelData.TColumnGroup));
 
     }
 }

@@ -35,20 +35,8 @@ namespace HTAddin
             List<FamilyInstance> selectedColumns = Util.SelectElementsbyType(uiDoc, BuiltInCategory.OST_StructuralColumns);
             data.TColumnGroup = TColumnGroupUtil.Get(selectedColumns);
 
-            foreach (var tColumn in data.TColumnGroup.TColumns)
-            {
-                var tDimGroup = tColumn.TDimGroup;
-
-                TaskDialog.Show("Show", data.TColumnGroup.TColumns.Count.ToString());
-            }
-
-            Util.ExecuteTransaction(doc, "Testing!", codeToExecute =>
-            {
-                TColumnGroupUtil.Do(data.TColumnGroup);
-
-            });
-
-
+            var form = formData.Form;
+            form.ShowDialog();
 
             return Result.Succeeded;
         }

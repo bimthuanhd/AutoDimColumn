@@ -354,6 +354,24 @@ namespace HTAddin
           
             return grids;
         }
+        public static List<DimensionType> GetAllDimensionTypes(Document document)
+        {
+            FilteredElementCollector collector = new FilteredElementCollector(document);
+            IList<Element> dimensions = collector.OfClass(typeof(DimensionType)).ToElements();
+
+            List<DimensionType> dimensionTypes = new List<DimensionType>();
+
+            foreach (Element element in dimensions)
+            {
+                DimensionType dimensionType = element as DimensionType;
+                if (dimensionType != null)
+                {
+                    dimensionTypes.Add(dimensionType);
+                }
+            }
+
+            return dimensionTypes;
+        }
         //
         public static List<RebarBarType> GetAllRebarBarTypes(Document doc)
         {

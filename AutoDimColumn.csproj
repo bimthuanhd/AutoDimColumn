@@ -53,17 +53,29 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Entity\Factory\Input\Input.cs" />
+    <Compile Include="Model\Entity\Factory\Input\InputUtil.cs" />
+    <Compile Include="Model\Entity\Factory\Input\InputVM.cs" />
+    <Compile Include="Model\Entity\Factory\Input\InputVMUtil.cs" />
     <Compile Include="Model\Entity\Factory\TColumn\Base\Base\TColumn.cs" />
     <Compile Include="Model\Entity\Factory\TColumn\Base\Base\TColumnUtil.cs" />
+    <Compile Include="Model\Entity\Factory\TColumn\Base\Base\TColumnVM.cs" />
+    <Compile Include="Model\Entity\Factory\TColumn\Base\Base\TColumnVMUtil.cs" />
     <Compile Include="Model\Entity\Factory\TColumn\Group\TColumnGroup.cs" />
     <Compile Include="Model\Entity\Factory\TColumn\Group\TColumnGroupUtil.cs" />
+    <Compile Include="Model\Entity\Factory\TColumn\Group\TColumnGroupVM.cs" />
+    <Compile Include="Model\Entity\Factory\TColumn\Group\TColumnGroupVMUtil.cs" />
     <Compile Include="Model\Entity\Factory\TDim\Base\TDim.cs" />
     <Compile Include="Model\Entity\Factory\TDim\Base\TDimUtil.cs" />
     <Compile Include="Model\Entity\Factory\TDim\Group\TDimGroup.cs" />
     <Compile Include="Model\Entity\Factory\TDim\Group\TDimGroupUtil.cs" />
     <Compile Include="Model\Entity\Factory\TDim\TGrid\Base\TGrid.cs" />
+    <Compile Include="Model\Form\Form.xaml.cs">
+      <DependentUpon>Form.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RevitCommand\RevitCommand.cs" />
     <Compile Include="Single\Form\FormData.cs" />
@@ -80,8 +92,12 @@
     <Content Include=".gitignore" />
     <Content Include="csharp.gitignore" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Model\Entity\Factory\Input\" />
+    <Page Include="Model\Form\Form.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

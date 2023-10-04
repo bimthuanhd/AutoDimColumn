@@ -24,11 +24,25 @@ namespace SingleData
             var doc = data.ModelData.doc;
             Selection sel = data.ModelData.sel;
 
-         
+            var form = data.Form;
+
+            Revitdata.doc = doc;
+            Revitdata.sel = sel;
+
+            using (Transaction tran = new Transaction(doc, "AutoDim for Column"))
+            {
+                tran.Start();
+                TColumnGroupUtil.Do(formData.TColumnGroupVM.ModelItem);
+                tran.Commit();
+            }
+
+            form.Close();
         }
 
         public static void HandleCancleClick(this FormData data)
         {
+            var form = data.Form;
+            form.Close();
         }
     }
 }

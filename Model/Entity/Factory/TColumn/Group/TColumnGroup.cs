@@ -28,5 +28,11 @@ namespace HTAddin
             set => this.projectGrids = value;
         }
 
+        private Input input;
+        public Input Input
+        {
+            get => this.input ?? (this.input = new Input() { TColumnGroup = this });
+            set => this.input = value;
+        }
     }
 }

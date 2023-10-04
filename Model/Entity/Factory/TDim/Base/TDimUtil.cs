@@ -10,13 +10,6 @@ namespace HTAddin
 {
     public class TDimUtil
     {
-        public static void Do(TDim q)
-        {
-            var doc = Data.Instance.doc;
-            var dim = doc.Create.NewDimension(doc.ActiveView, q.Line, q.RA);
-            var extendDistance = Util.MmToFeet(300);
-            ElementTransformUtils.MoveElement(doc, dim.Id, extendDistance * q.Direction);
-        }
         public static Line GetLine(TDim q)
         {
             Line line = null;
