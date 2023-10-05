@@ -11,7 +11,7 @@ using Autodesk.Revit.UI.Selection;
 using Autodesk.Revit.UI;
 using System.Windows;
 
-namespace HTAddin
+namespace HTAddin.AutoDimColumn
 {
     [Transaction(TransactionMode.Manual)]
     public class RevitCommand : IExternalCommand
