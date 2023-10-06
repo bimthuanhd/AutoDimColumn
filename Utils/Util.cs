@@ -342,7 +342,7 @@ namespace HTAddin
         }
         public static List<Grid> GetAllGrids(Document doc)
         {
-           
+
             List<Grid> grids = new List<Grid>();
 
             FilteredElementCollector collector = new FilteredElementCollector(doc);
@@ -351,7 +351,7 @@ namespace HTAddin
             {
                 grids.Add(element as Grid);
             }
-          
+
             return grids;
         }
         public static List<DimensionType> GetAllDimensionTypes(Document document)
@@ -489,6 +489,38 @@ namespace HTAddin
         }
 
         // Select
+        public static List<FamilyInstance> SelectElementsbyTypes(UIDocument uiDoc, List<BuiltInCategory> builtInCategories)
+        {
+
+            Document doc = uiDoc.Document;
+            Selection sel = uiDoc.Selection;
+
+            List<FamilyInstance> selectedElements = new List<FamilyInstance>();
+            CategoriesSelectionFilter categoryFilter = new CategoriesSelectionFilter(builtInCategories);
+
+            try
+            {
+                IList<Reference> references = sel.PickObjects(ObjectType.Element, categoryFilter, "Select elements");
+
+                if (references != null)
+                {
+                    foreach (Reference reference in references)
+                    {
+                        Element element = doc.GetElement(reference.ElementId) as FamilyInstance;
+
+                        if (element != null)
+                        {
+                            selectedElements.Add(element as FamilyInstance);
+                        }
+                    }
+                }
+            }
+            catch (OperationCanceledException)
+            {
+            }
+
+            return selectedElements;
+        }
         public static List<FamilyInstance> SelectElementsbyType(UIDocument uiDoc, BuiltInCategory builtInCategory)
         {
             Document doc = uiDoc.Document;
@@ -615,7 +647,7 @@ namespace HTAddin
 
             return modelLine;
         }
-        public static ModelCurve CreateModel(Document doc , Curve curve)
+        public static ModelCurve CreateModel(Document doc, Curve curve)
         {
             var dir = (curve as Line).Direction;
             var pnt = curve.GetEndPoint(0);
@@ -820,6 +852,25 @@ namespace HTAddin
         public bool AllowElement(Element elem)
         {
             return elem.Category.Id.IntegerValue == (int)targetCategory;
+        }
+
+        public bool AllowReference(Reference reference, XYZ position)
+        {
+            return false;
+        }
+    }
+    public class CategoriesSelectionFilter : ISelectionFilter
+    {
+        private List<BuiltInCategory> targetCategories;
+
+        public CategoriesSelectionFilter(List<BuiltInCategory> categories)
+        {
+            targetCategories = categories;
+        }
+
+        public bool AllowElement(Element elem)
+        {
+            return targetCategories.Contains((BuiltInCategory)elem.Category.Id.IntegerValue);
         }
 
         public bool AllowReference(Reference reference, XYZ position)

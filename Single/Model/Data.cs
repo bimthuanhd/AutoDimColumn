@@ -28,5 +28,6 @@ namespace SingleData
 
         //data
         public TColumnGroup TColumnGroup { get; set; }
+    
     }
 }

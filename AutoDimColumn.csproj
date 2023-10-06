@@ -90,7 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
-    <Content Include="csharp.gitignore" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Model\Form\Form.xaml">

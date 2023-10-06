@@ -32,8 +32,14 @@ namespace HTAddin.AutoDimColumn
             data.doc = doc;
             data.sel = sel;
 
-            List<FamilyInstance> selectedColumns = Util.SelectElementsbyType(uiDoc, BuiltInCategory.OST_StructuralColumns);
-            data.TColumnGroup = TColumnGroupUtil.Get(selectedColumns);
+            List<FamilyInstance> selected_WallColumns = Util.SelectElementsbyTypes(
+                uiDoc,
+                new List<BuiltInCategory>() { BuiltInCategory.OST_StructuralColumns ,
+                BuiltInCategory.OST_Walls });
+            List<FamilyInstance> selected_Walls = selected_WallColumns.Where(x => x.Category.Name == "Walls").ToList();
+            List<FamilyInstance> selected_Columns = selected_WallColumns.Where(x => x.Category.Name == "Structural Columns").ToList();
+
+            data.TColumnGroup = TColumnGroupUtil.Get(selected_Columns);
 
             var form = formData.Form;
             form.ShowDialog();
