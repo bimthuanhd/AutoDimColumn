@@ -12,7 +12,7 @@ namespace HTAddin
 {
     public class TColumnGroup
     {
-        public List<FamilyInstance> Columns { get; set; }
+        public List<Element> Columns { get; set; }
 
         private List<TColumn> tColumn;
         public List<TColumn> TColumns

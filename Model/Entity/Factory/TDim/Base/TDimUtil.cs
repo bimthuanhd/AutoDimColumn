@@ -22,6 +22,23 @@ namespace HTAddin
         }
         public static TGrid GetNearestTGrid(TDim q)
         {
+            TGrid tGrid = null;
+
+            switch (q.Dict.Tcolumn.Type)
+            {
+                case "Column":
+                    tGrid = Get_ColumnNearestTGrid(q);
+                    break;
+                case "Wall":
+                    tGrid = Get_WallNearestTGrid(q);
+                    break;
+                default:
+                    break;
+            }
+            return tGrid;
+        }
+        public static TGrid Get_ColumnNearestTGrid(TDim q)
+        {
             var app = Data.Instance.app;
             var doc = Data.Instance.doc;
             XYZ locationPoint = (q.Dict.Tcolumn.Column.Location as LocationPoint).Point;
@@ -84,6 +101,15 @@ namespace HTAddin
                 Line = currentLine,
                 Ref = currentRef,
             };
+
+            return tGrid;
+        }
+        public static TGrid Get_WallNearestTGrid(TDim q)
+        {
+
+
+            TGrid tGrid = null;
+            
 
             return tGrid;
         }

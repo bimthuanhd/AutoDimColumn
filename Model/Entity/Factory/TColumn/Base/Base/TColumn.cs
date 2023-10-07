@@ -13,10 +13,10 @@ namespace HTAddin
 {
     public class TColumn
     {
-        public FamilyInstance Column { get; set; }
+        public Element Column { get; set; }
         public TColumnGroup Dict { get; set; }
 
-        private int ?tColumnIndex;
+        private int? tColumnIndex;
         public int TColumnIndex
         {
             get
@@ -29,8 +29,16 @@ namespace HTAddin
             }
         }
 
+        private string type;
+        public string Type
+        {
+            get => this.type ?? (this.type = TColumnUtil.GetType(this));
+            set => this.type = value;
+        }
+
         private TDimGroup tDimGroup;
-        public TDimGroup TDimGroup {
+        public TDimGroup TDimGroup
+        {
             get => this.tDimGroup ?? (this.tDimGroup = TColumnUtil.GetTDimGroup(this));
             set => this.tDimGroup = value;
         }

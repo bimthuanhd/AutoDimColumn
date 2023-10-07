@@ -489,13 +489,13 @@ namespace HTAddin
         }
 
         // Select
-        public static List<FamilyInstance> SelectElementsbyTypes(UIDocument uiDoc, List<BuiltInCategory> builtInCategories)
+        public static List<Element> SelectElementsbyTypes(UIDocument uiDoc, List<BuiltInCategory> builtInCategories)
         {
 
             Document doc = uiDoc.Document;
             Selection sel = uiDoc.Selection;
 
-            List<FamilyInstance> selectedElements = new List<FamilyInstance>();
+            List<Element> selectedElements = new List<Element>();
             CategoriesSelectionFilter categoryFilter = new CategoriesSelectionFilter(builtInCategories);
 
             try
@@ -506,11 +506,11 @@ namespace HTAddin
                 {
                     foreach (Reference reference in references)
                     {
-                        Element element = doc.GetElement(reference.ElementId) as FamilyInstance;
+                        Element element = doc.GetElement(reference.ElementId) as Element;
 
                         if (element != null)
                         {
-                            selectedElements.Add(element as FamilyInstance);
+                            selectedElements.Add(element as Element);
                         }
                     }
                 }

@@ -13,7 +13,7 @@ namespace HTAddin
     public static class TColumnGroupUtil
     {
         //property
-        public static TColumnGroup Get(List<FamilyInstance> columns)
+        public static TColumnGroup Get(List<Element> columns)
         {
             var tColumnGroup = new TColumnGroup();
             tColumnGroup.Columns = columns;
