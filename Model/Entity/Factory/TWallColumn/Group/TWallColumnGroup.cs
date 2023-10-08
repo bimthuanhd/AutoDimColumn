@@ -10,28 +10,28 @@ using Autodesk.Revit.UI;
 
 namespace HTAddin
 {
-    public class TColumnGroup
+    public class TWallColumnGroup
     {
-        public List<Element> Columns { get; set; }
+        public List<Element> WallColumns { get; set; }
 
-        private List<TColumn> tColumn;
-        public List<TColumn> TColumns
+        private List<TWallColumn> tWallColumns;
+        public List<TWallColumn> TWallColumns
         {
-            get => this.tColumn ?? (this.tColumn = new List<TColumn>());
-            set => this.tColumn = value;
+            get => this.tWallColumns ?? (this.tWallColumns = new List<TWallColumn>());
+            set => this.tWallColumns = value;
         }
 
         private List<Grid> projectGrids;
         public List<Grid> ProjectGrids
         {
-            get => this.projectGrids ?? (this.projectGrids = TColumnGroupUtil.GetProjectGrids(this));
+            get => this.projectGrids ?? (this.projectGrids = TWallColumnGroupUtil.GetProjectGrids(this));
             set => this.projectGrids = value;
         }
 
         private Input input;
         public Input Input
         {
-            get => this.input ?? (this.input = new Input() { TColumnGroup = this });
+            get => this.input ?? (this.input = new Input() { TWallColumnGroup = this });
             set => this.input = value;
         }
     }

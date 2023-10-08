@@ -11,15 +11,15 @@ using SingleData;
 
 namespace HTAddin
 {
-    public class TColumnGroupVM
+    public class TWallColumnGroupVM
     {
-        public TColumnGroup ModelItem { get; set; }
+        public TWallColumnGroup ModelItem { get; set; }
 
-        private ObservableCollection<TColumnVM> tColumnsVM;
-        public ObservableCollection<TColumnVM> TColumnsVM
+        private ObservableCollection<TWallColumnVM> tWallColumnsVM;
+        public ObservableCollection<TWallColumnVM> TWallColumnsVM
         {
-            get => this.tColumnsVM ?? (this.tColumnsVM = this.GetTColumnsVM());
-            set => this.tColumnsVM = value;
+            get => this.tWallColumnsVM ?? (this.tWallColumnsVM = this.GetTWallColumnsVM());
+            set => this.tWallColumnsVM = value;
         }
 
         public List<Grid> ProjectGridsVM

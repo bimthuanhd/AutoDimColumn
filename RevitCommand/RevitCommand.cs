@@ -32,17 +32,15 @@ namespace HTAddin.AutoDimColumn
             data.doc = doc;
             data.sel = sel;
 
-            //List<FamilyInstance> selected_WallColumns = Util.SelectElementsbyTypes(
-            //    uiDoc,
-            //    new List<BuiltInCategory>() { BuiltInCategory.OST_StructuralColumns ,
-            //    BuiltInCategory.OST_Walls });
-            ////List<FamilyInstance> selected_Walls = selected_WallColumns.Where(x => x.Category.Name == "Walls").ToList();
-            ////List<FamilyInstance> selected_Columns = selected_WallColumns.Where(x => x.Category.Name == "Structural Columns").ToList();
+            List<Element> selected_WallColumns = Util.SelectElementsbyTypes(
+                uiDoc,
+                new List<BuiltInCategory>() { BuiltInCategory.OST_StructuralColumns ,
+                BuiltInCategory.OST_Walls });
 
-            //data.TColumnGroup = TColumnGroupUtil.Get(selected_WallColumns);
+            data.TWallColumnGroup = TWallColumnGroupUtil.Get(selected_WallColumns);
 
-            //var form = formData.Form;
-            //form.ShowDialog();
+            var form = formData.Form;
+            form.ShowDialog();
 
             return Result.Succeeded;
         }

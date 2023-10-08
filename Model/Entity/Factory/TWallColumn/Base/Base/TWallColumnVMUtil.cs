@@ -8,17 +8,17 @@ using SingleData;
 
 namespace HTAddin
 {
-    public static class TColumnVMUtil
+    public static class TWallColumnVMUtil
     {
-        public static TColumnVM GetVM(this TColumn tColumn, TColumnGroupVM dict)
+        public static TWallColumnVM GetVM(this TWallColumn tWallColumn, TWallColumnGroupVM dict)
         {
-            var newTcolumnVM = new TColumnVM
+            var newTWallColumnVM = new TWallColumnVM
             {
-                ModelItem = tColumn,
+                ModelItem = tWallColumn,
                 Dict = dict
             };
 
-            return newTcolumnVM;
+            return newTWallColumnVM;
         }
 
     }

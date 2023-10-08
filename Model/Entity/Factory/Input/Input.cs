@@ -12,7 +12,7 @@ namespace HTAddin
 {
     public class Input
     {
-        public TColumnGroup TColumnGroup;
+        public TWallColumnGroup TWallColumnGroup;
         public bool IsHaveTotalDim { get; set; } = true;
         private List<DimensionType> dimensionTypes;
 

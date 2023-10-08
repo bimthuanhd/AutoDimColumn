@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace HTAddin
 {
-    public static class TColumnUtil
+    public static class TWallColumnUtil
     {
-        public static int GetColumnIndex(this TColumn q)
+        public static int GetWallColumnIndex(this TWallColumn q)
         {
-            return q.Dict.TColumns.IndexOf(q);
+            return q.Dict.TWallColumns.IndexOf(q);
         }
 
-        public static string GetType(TColumn q)
+        public static string GetType(TWallColumn q)
         {
             var type = "Column";
-            var categoryName = q.Column.Category.Name;
+            var categoryName = q.WallColumn.Category.Name;
             switch (categoryName)
             {
                 case "Walls":
@@ -35,7 +35,7 @@ namespace HTAddin
             return type;
         }
 
-        public static TDimGroup GetTDimGroup(this TColumn q)
+        public static TDimGroup GetTDimGroup(this TWallColumn q)
         {
             var tDimGroup = new TDimGroup();
             switch (q.Type)
@@ -54,7 +54,7 @@ namespace HTAddin
             return tDimGroup;
         }
 
-        public static TDimGroup Get_ColumnTDimGroup(this TColumn q)
+        public static TDimGroup Get_ColumnTDimGroup(this TWallColumn q)
         {
             var app = Data.Instance.app;
 
@@ -70,7 +70,7 @@ namespace HTAddin
             List<XYZ> directions = new List<XYZ>();
             List<Face> faces = new List<Face>();
 
-            GeometryElement gE = q.Column.get_Geometry(op) as GeometryElement;
+            GeometryElement gE = q.WallColumn.get_Geometry(op) as GeometryElement;
             foreach (GeometryObject gO in gE)
             {
                 if (gO is Solid solid)
@@ -134,7 +134,7 @@ namespace HTAddin
 
             var tDimGroup = new TDimGroup()
             {
-                Tcolumn = q,
+                TWallColumn = q,
                 RA = filtered_RA,
                 Points = filtered_Points,
                 Directions = directions,
@@ -143,7 +143,7 @@ namespace HTAddin
 
             return tDimGroup;
         }
-        public static TDimGroup Get_WallTDimGroup(this TColumn q)
+        public static TDimGroup Get_WallTDimGroup(this TWallColumn q)
         {
             var app = Data.Instance.app;
 
@@ -159,7 +159,7 @@ namespace HTAddin
             List<XYZ> directions = new List<XYZ>();
             List<Face> faces = new List<Face>();
 
-            GeometryElement gE = q.Column.get_Geometry(op) as GeometryElement;
+            GeometryElement gE = q.WallColumn.get_Geometry(op) as GeometryElement;
             foreach (GeometryObject gO in gE)
             {
                 if (gO is Solid solid && solid.Faces.Size == 6)
@@ -196,7 +196,21 @@ namespace HTAddin
                                     filtered_RA.Append(pfi.Reference);
                                     filtered_RA.Append(pfj.Reference);
 
-                                    Edge edgeLoopPointi = pfi.EdgeLoops.get_Item(0).get_Item(0);
+                                    int edgeLoopIndex = 0;
+                                    for (int ind = 0; ind < pfi.EdgeLoops.get_Item(0).Size; ind++)
+                                    {
+                                        var find_EdgeLoopPoint = pfi.EdgeLoops.get_Item(0).get_Item(ind);
+                                        Line find_Linei = find_EdgeLoopPoint.AsCurve() as Line;
+                                        XYZ find_Pointi = find_Linei.GetEndPoint(0);
+                                        XYZ find_Pointi1 = find_Linei.GetEndPoint(1);
+                                        if (find_Pointi.Z == find_Pointi1.Z)
+                                        {
+                                            edgeLoopIndex = ind;
+                                            break;
+                                        }
+                                    }
+
+                                    Edge edgeLoopPointi = pfi.EdgeLoops.get_Item(0).get_Item(edgeLoopIndex);
                                     Line linei = edgeLoopPointi.AsCurve() as Line;
                                     XYZ pointi = linei.GetEndPoint(0);
                                     filtered_Points.Add(pointi);
@@ -205,9 +219,9 @@ namespace HTAddin
                                     XYZ direct = (pointi - pointi1).Normalize();
                                     directions.Add(direct);
 
-                                    Edge edgeLoopPointj = pfj.EdgeLoops.get_Item(0).get_Item(0);
+                                    Edge edgeLoopPointj = pfj.EdgeLoops.get_Item(0).get_Item(edgeLoopIndex);
                                     Line linej = edgeLoopPointj.AsCurve() as Line;
-                                    XYZ pointj = linej.GetEndPoint(0);
+                                    XYZ pointj = new XYZ(linej.GetEndPoint(0).X, linej.GetEndPoint(0).Y, pointi.Z);
                                     filtered_Points.Add(pointj);
                                     faces.Add(facei);
 
@@ -223,7 +237,7 @@ namespace HTAddin
 
             var tDimGroup = new TDimGroup()
             {
-                Tcolumn = q,
+                TWallColumn = q,
                 RA = filtered_RA,
                 Points = filtered_Points,
                 Directions = directions,

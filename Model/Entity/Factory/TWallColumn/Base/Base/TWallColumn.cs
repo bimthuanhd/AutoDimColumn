@@ -11,35 +11,35 @@ using SingleData;
 
 namespace HTAddin
 {
-    public class TColumn
+    public class TWallColumn
     {
-        public Element Column { get; set; }
-        public TColumnGroup Dict { get; set; }
+        public Element WallColumn { get; set; }
+        public TWallColumnGroup Dict { get; set; }
 
-        private int? tColumnIndex;
-        public int TColumnIndex
+        private int? tWallColumnIndex;
+        public int TWallColumnIndex
         {
             get
             {
-                if (tColumnIndex == null)
+                if (tWallColumnIndex == null)
                 {
-                    tColumnIndex = TColumnUtil.GetColumnIndex(this);
+                    tWallColumnIndex = TWallColumnUtil.GetWallColumnIndex(this);
                 }
-                return this.tColumnIndex.Value;
+                return this.tWallColumnIndex.Value;
             }
         }
 
         private string type;
         public string Type
         {
-            get => this.type ?? (this.type = TColumnUtil.GetType(this));
+            get => this.type ?? (this.type = TWallColumnUtil.GetType(this));
             set => this.type = value;
         }
 
         private TDimGroup tDimGroup;
         public TDimGroup TDimGroup
         {
-            get => this.tDimGroup ?? (this.tDimGroup = TColumnUtil.GetTDimGroup(this));
+            get => this.tDimGroup ?? (this.tDimGroup = TWallColumnUtil.GetTDimGroup(this));
             set => this.tDimGroup = value;
         }
 

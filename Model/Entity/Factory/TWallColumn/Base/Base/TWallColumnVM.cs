@@ -8,15 +8,15 @@ using SingleData;
 
 namespace HTAddin
 {
-    public class TColumnVM : BaseViewModel
+    public class TWallColumnVM : BaseViewModel
     {
-        public TColumn ModelItem { get; set; }
+        public TWallColumn ModelItem { get; set; }
 
-        public TColumnGroupVM Dict { get; set; }
+        public TWallColumnGroupVM Dict { get; set; }
 
         public int TColumnIndex
         {
-            get => this.ModelItem.TColumnIndex;
+            get => this.ModelItem.TWallColumnIndex;
         }
         public TDimGroup TDimGroupVM
         {

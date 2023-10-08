@@ -13,7 +13,7 @@ namespace HTAddin
 {
     public class TDimGroup
     {
-        public TColumn Tcolumn;
+        public TWallColumn TWallColumn;
         private List<TDim> detailTDims;
         public List<TDim> DetailTDims
         {

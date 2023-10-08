@@ -31,16 +31,18 @@ namespace HTAddin
 
             List<Element> selected_WallColumns = Util.SelectElementsbyTypes(
                 uiDoc,
-                new List<BuiltInCategory>() { BuiltInCategory.OST_StructuralColumns ,
+                new List<BuiltInCategory>() { BuiltInCategory.OST_StructuralColumns,
                 BuiltInCategory.OST_Walls });
-            //List<FamilyInstance> selected_Walls = selected_WallColumns.Where(x => x.Category.Name == "Walls").ToList();
+
+            List<Element> selected_Walls = selected_WallColumns.Where(x => x.Category.Name == "Walls").ToList();
             //List<FamilyInstance> selected_Columns = selected_WallColumns.Where(x => x.Category.Name == "Structural Columns").ToList();
 
-            data.TColumnGroup = TColumnGroupUtil.Get(selected_WallColumns);
+            data.TWallColumnGroup = TWallColumnGroupUtil.Get(selected_WallColumns);
+
 
             Util.ExecuteTransaction(doc, "Testing!", codeToExecute =>
             {
-                TColumnGroupUtil.Do(data.TColumnGroup);
+                TWallColumnGroupUtil.Do(data.TWallColumnGroup);
             });
 
             return Result.Succeeded;

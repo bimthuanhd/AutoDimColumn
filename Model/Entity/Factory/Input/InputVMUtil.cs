@@ -9,12 +9,12 @@ namespace HTAddin
 {
     public class InputVMUtil
     {
-        public static InputVM GetVM(Input q, TColumnGroupVM tColumnGroupVM)
+        public static InputVM GetVM(Input q, TWallColumnGroupVM tColumnGroupVM)
         {
             return new InputVM
             {
                 ModelItem = q,
-                TColumnGroupVM = tColumnGroupVM
+                TWallColumnGroupVM = tColumnGroupVM
             };
         }
 

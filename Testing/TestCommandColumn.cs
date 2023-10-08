@@ -29,11 +29,12 @@ namespace HTAddin
             data.app = app;
             data.doc = doc;
             data.sel = sel;
+
             ////
-            List<FamilyInstance> columnins = Util.SelectElementsbyType(uiDoc, BuiltInCategory.OST_StructuralColumns);
-            foreach (var columnin in columnins)
+            List<Element> wallels = Util.SelectElementsbyTypes(uiDoc, new List<BuiltInCategory>() { BuiltInCategory.OST_Walls });
+            foreach (var wallel in wallels)
             {
-                var column = doc.GetElement(columnin.Id);
+                var wall = doc.GetElement(wallel.Id);
 
                 Options op = app.Create.NewGeometryOptions();
                 op.ComputeReferences = true;
@@ -46,10 +47,10 @@ namespace HTAddin
                 List<XYZ> filteredPoints = new List<XYZ>();
                 List<XYZ> directions = new List<XYZ>();
 
-                GeometryElement GE = column.get_Geometry(op) as GeometryElement;
+                GeometryElement GE = wall.get_Geometry(op) as GeometryElement;
                 foreach (GeometryObject GO in GE)
                 {
-                    if (GO is Solid solid)
+                    if (GO is Solid solid && solid.Faces.Size == 6)
                     {
                         FaceArray FA = solid.Faces;
 
@@ -83,7 +84,21 @@ namespace HTAddin
                                         filteredRA.Append(pfi.Reference);
                                         filteredRA.Append(pfj.Reference);
 
-                                        Edge edgeLoopPointi = pfi.EdgeLoops.get_Item(0).get_Item(0);
+                                        int edgeLoopIndex = 0;
+                                        for (int ind = 0; ind < pfi.EdgeLoops.get_Item(0).Size; ind++)
+                                        {
+                                            var find_EdgeLoopPoint = pfi.EdgeLoops.get_Item(0).get_Item(ind);
+                                            Line find_Linei = find_EdgeLoopPoint.AsCurve() as Line;
+                                            XYZ find_Pointi = find_Linei.GetEndPoint(0);
+                                            XYZ find_Pointi1 = find_Linei.GetEndPoint(1);
+                                            if (find_Pointi.Z == find_Pointi1.Z)
+                                            {
+                                                edgeLoopIndex = ind;
+                                                break;
+                                            }
+                                        }
+
+                                        Edge edgeLoopPointi = pfi.EdgeLoops.get_Item(0).get_Item(edgeLoopIndex);
                                         Line linei = edgeLoopPointi.AsCurve() as Line;
                                         XYZ pointi = linei.GetEndPoint(0);
                                         filteredPoints.Add(pointi);
@@ -92,9 +107,9 @@ namespace HTAddin
                                         XYZ direct = (pointi - pointi1).Normalize();
                                         directions.Add(direct);
 
-                                        Edge edgeLoopPointj = pfj.EdgeLoops.get_Item(0).get_Item(0);
+                                        Edge edgeLoopPointj = pfj.EdgeLoops.get_Item(0).get_Item(edgeLoopIndex);
                                         Line linej = edgeLoopPointj.AsCurve() as Line;
-                                        XYZ pointj = linej.GetEndPoint(0);
+                                        XYZ pointj = new XYZ(linej.GetEndPoint(0).X, linej.GetEndPoint(0).Y, pointi.Z);
                                         filteredPoints.Add(pointj);
 
                                         addedPlannarFaces.Add(plannarFacei);
@@ -136,211 +151,6 @@ namespace HTAddin
         }
 
 
-        private bool isParallel(XYZ lineDir, XYZ faceNormal)
-        {
-            return faceNormal.CrossProduct(lineDir).IsAlmostEqualTo(new XYZ(0, 0, 0));
-        }
-        private XYZ findNormal(Curve curve)
-        {
-            XYZ p = curve.GetEndPoint(0);
-            XYZ q = curve.GetEndPoint(1);
-            XYZ v = q - p;
 
-            return v.CrossProduct(XYZ.BasisZ).Normalize();
-        }
-        public static DimensionType GetDimensionTypeByName(Document doc, string typeName)
-        {
-            FilteredElementCollector collector = new FilteredElementCollector(doc);
-            Element element = collector.OfClass(typeof(DimensionType)).FirstOrDefault(x => x.Name == typeName);
-            return element as DimensionType;
-        }
-        Dimension CreateNewDimensionAlongLine(Document document, Line line)
-        {
-            // Use the Start and End points of our line as the references  
-            // Line must come from something in Revit, such as a beam
-            ReferenceArray references = new ReferenceArray();
-            references.Append(line.GetEndPointReference(0));
-            references.Append(line.GetEndPointReference(1));
-
-            // create the new dimension
-            Dimension dimension = document.Create.NewDimension(document.ActiveView, line, references);
-            return dimension;
-        }
-        private Element GetBeamElement(Document doc)
-        {
-            // Lấy một dầm từ mô hình Revit
-            FilteredElementCollector collector = new FilteredElementCollector(doc);
-            Element beam = collector.OfCategory(BuiltInCategory.OST_StructuralFraming)
-                                    .OfClass(typeof(FamilyInstance))
-                                    .FirstOrDefault();
-
-            return beam;
-        }
-        public void CreateDimensionOnBeam(FamilyInstance beam)
-        {
-            Document document = beam.Document;
-            View activeView = document.ActiveView;
-
-            LocationCurve location = beam.Location as LocationCurve;
-            Line line = location.Curve as Line;
-
-            if (line != null)
-            {
-                ReferenceArray references = new ReferenceArray();
-                references.Append(line.GetEndPointReference(0));
-                references.Append(line.GetEndPointReference(1));
-
-                Dimension dimension = document.Create.NewDimension(activeView, line, references); ;
-
-            }
-            else
-            {
-                TaskDialog.Show("revit", "line is null");
-            }
-        }
-        public class WallSelectionFilter : ISelectionFilter
-        {
-            public bool AllowElement(Element elem)
-            {
-                return elem is Wall wall && wall.Category != null &&
-                       wall.Category.Id.IntegerValue == (int)BuiltInCategory.OST_Walls;
-            }
-
-            public bool AllowReference(Reference reference, XYZ position)
-            {
-                return false;
-            }
-        }
-        public class ColumnSelectionFilter : ISelectionFilter
-        {
-            public bool AllowElement(Element elem)
-            {
-                return elem is FamilyInstance familyInstance && familyInstance.Category != null &&
-                       familyInstance.Category.Id.IntegerValue == (int)BuiltInCategory.OST_StructuralColumns;
-            }
-
-            public bool AllowReference(Reference reference, XYZ position)
-            {
-                return false;
-            }
-        }
-        public class BeamSelectionFilter : ISelectionFilter
-        {
-            public bool AllowElement(Element elem)
-            {
-                return elem is FamilyInstance familyInstance && familyInstance.Category != null &&
-                       familyInstance.Category.Id.IntegerValue == (int)BuiltInCategory.OST_StructuralFraming;
-            }
-
-            public bool AllowReference(Reference reference, XYZ position)
-            {
-                return false;
-            }
-        }
-        public List<Face> GetBeamSideFaces(FamilyInstance beam)
-        {
-            Options options = new Options();
-            options.ComputeReferences = true;
-            GeometryElement geometryElement = beam.get_Geometry(options);
-
-            List<Face> sideFaces = new List<Face>();
-
-            foreach (GeometryObject geometryObject in geometryElement)
-            {
-                if (geometryObject is Solid solid)
-                {
-                    foreach (Face face in solid.Faces)
-                    {
-                        if (IsBeamSideFace(face, beam))
-                        {
-                            sideFaces.Add(face);
-                        }
-                    }
-                }
-            }
-
-            return sideFaces;
-        }
-
-        private bool IsBeamSideFace(Face face, FamilyInstance beam)
-        {
-            XYZ faceNormal = face.ComputeNormal(new UV());
-
-            // Lấy hướng cột của dầm (thay thế bằng phương thức hoặc mã tương ứng)
-            XYZ beamDirection = beam.FacingOrientation;
-
-            double dotProduct = faceNormal.DotProduct(beamDirection);
-
-            if (dotProduct > 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private PlanarFace GetPlanarFace(Element element)
-        {
-            Options options = new Options();
-            GeometryElement geometryElement = element.get_Geometry(options);
-
-            foreach (GeometryObject geometryObject in geometryElement)
-            {
-                if (geometryObject is Solid solid)
-                {
-                    foreach (Face face in solid.Faces)
-                    {
-                        if (face is PlanarFace planarFace)
-                        {
-                            return planarFace;
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
-        private XYZ GetCentroid(PlanarFace face)
-        {
-            var loop = face.GetEdgesAsCurveLoops().FirstOrDefault();
-            if (loop != null)
-            {
-                var normal = face.FaceNormal;
-                var startPoint = loop.FirstOrDefault()?.GetEndPoint(0);
-                var endPoint = loop.FirstOrDefault()?.GetEndPoint(1);
-
-                if (startPoint != null && endPoint != null)
-                {
-                    var centroid = (startPoint + endPoint) * 0.5;
-                    return centroid + normal * 1;
-                }
-            }
-
-            return null;
-        }
-
-        private Reference GetFirstGeometryReference(GeometryElement geometryElement)
-        {
-            Reference firstReference = null;
-
-            foreach (GeometryObject geometryObject in geometryElement)
-            {
-                if (geometryObject is GeometryInstance geometryInstance)
-                {
-                    GeometryElement instanceGeometry = geometryInstance.GetInstanceGeometry();
-                    firstReference = GetFirstGeometryReference(instanceGeometry);
-                    if (firstReference != null)
-                        break;
-                }
-                else if (geometryObject is Solid solid && solid.Faces.Size > 0)
-                {
-                    Face firstFace = solid.Faces.get_Item(0);
-                    firstReference = firstFace.Reference;
-                    break;
-                }
-            }
-
-            return firstReference;
-        }
     }
 }

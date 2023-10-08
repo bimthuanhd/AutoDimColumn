@@ -21,10 +21,10 @@ namespace SingleData
         public  Data ModelData => Data.Instance;
 
         private Form form;
-        public Form Form => form ?? (form = new Form { DataContext = this.TColumnGroupVM });
+        public Form Form => form ?? (form = new Form { DataContext = this.TWallColumnGroupVM });
 
-        private TColumnGroupVM tColumnGroupVM;
-        public TColumnGroupVM TColumnGroupVM => this.tColumnGroupVM ?? (this.tColumnGroupVM = TColumnGroupVMUtil.GetVM(ModelData.TColumnGroup));
+        private TWallColumnGroupVM tWallColumnGroupVM;
+        public TWallColumnGroupVM TWallColumnGroupVM => this.tWallColumnGroupVM ?? (this.tWallColumnGroupVM = TWallColumnGroupVMUtil.GetVM(ModelData.TWallColumnGroup));
 
     }
 }

@@ -12,7 +12,7 @@ namespace HTAddin
     {
         public Input ModelItem { get; set; }
 
-        public TColumnGroupVM TColumnGroupVM;
+        public TWallColumnGroupVM TWallColumnGroupVM;
 
         public bool IsHaveTotalDimVM
         {

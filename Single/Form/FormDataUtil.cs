@@ -32,7 +32,7 @@ namespace SingleData
             using (Transaction tran = new Transaction(doc, "AutoDim for Column"))
             {
                 tran.Start();
-                TColumnGroupUtil.Do(formData.TColumnGroupVM.ModelItem);
+                TWallColumnGroupUtil.Do(formData.TWallColumnGroupVM.ModelItem);
                 tran.Commit();
             }
 
