@@ -20,3 +20,14 @@ G:\RV.API\AutoDimColumn\obj\Debug\AutoDimColumn_MarkupCompile.cache
 G:\RV.API\AutoDimColumn\obj\Debug\AutoDimColumn_MarkupCompile.lref
 G:\RV.API\AutoDimColumn\obj\Debug\Model\Form\Form.baml
 G:\RV.API\AutoDimColumn\obj\Debug\AutoDimColumn.g.resources
+D:\@Thuan\Github\AutoDimColumn\bin\Debug\AutoDimColumn.dll
+D:\@Thuan\Github\AutoDimColumn\bin\Debug\AutoDimColumn.pdb
+D:\@Thuan\Github\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.AssemblyReference.cache
+D:\@Thuan\Github\AutoDimColumn\obj\Debug\Model\Form\Form.g.cs
+D:\@Thuan\Github\AutoDimColumn\obj\Debug\AutoDimColumn_MarkupCompile.cache
+D:\@Thuan\Github\AutoDimColumn\obj\Debug\AutoDimColumn_MarkupCompile.lref
+D:\@Thuan\Github\AutoDimColumn\obj\Debug\Model\Form\Form.baml
+D:\@Thuan\Github\AutoDimColumn\obj\Debug\AutoDimColumn.g.resources
+D:\@Thuan\Github\AutoDimColumn\obj\Debug\AutoDimColumn.csproj.CoreCompileInputs.cache
+D:\@Thuan\Github\AutoDimColumn\obj\Debug\AutoDimColumn.dll
+D:\@Thuan\Github\AutoDimColumn\obj\Debug\AutoDimColumn.pdb
